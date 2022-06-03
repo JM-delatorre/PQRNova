@@ -8,3 +8,7 @@
 .separador{
     margin: 10px;
 }
+.scroller{
+    height: 90%;
+    overflow-y: scroll;
+}
