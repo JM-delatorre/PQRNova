@@ -9,3 +9,11 @@ export const APIGetPQRS = async () => {
     
     return pqrs;
 };
+
+export const APIPostPQR = async(data) => {
+    await axios.post("http://localhost:3001/api/pqr", data)
+        .then(resolve =>{
+            
+            console.log("USUARIO RESGISTRADO")
+        })
+}

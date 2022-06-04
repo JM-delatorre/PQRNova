@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Form, FormFeedback, FormGroup, Input, Label, Modal, ModalBody, ModalHeader} from "reactstrap";
 import NavBarTop from "../components/NavBarTop";
-
+import { APIPostPQR } from "../apiServices/apiPQRS";
 class FormularioPQR extends React.Component{
     constructor(props) {
         super(props);
@@ -27,6 +27,30 @@ class FormularioPQR extends React.Component{
         
       }
 
+    postPQR = async() => {
+        let datos = {
+            nombre: this.state.nombre,
+            telefono: this.state.telefono,
+            correo: this.state.correo,
+            tipoPublicacion: this.state.tipoPublicacion,
+            contenido: this.state.contenido
+        }
+        
+        await APIPostPQR(datos)
+        this.setState({
+            nombre: '',
+            telefono: 0,
+            correo: '',
+            tipoPublicacion: '',
+            contenido: '',
+            validate: {
+                emailState: '',
+                nameState: '',
+                contenidoState: '',
+            }
+        })
+
+    } 
     onValueChange(event) {
         this.setState({
             tipoPublicacion: event.target.value
@@ -48,25 +72,25 @@ class FormularioPQR extends React.Component{
 
     validateForm= () => {
         
-        if (this.state.nombre == '' || this.state.validate.nameState == 'has-danger'){
+        if (this.state.nombre === '' || this.state.validate.nameState === 'has-danger'){
             const { validate } = this.state;
             validate.nameState = 'has-danger';
             this.setState({ validate });
             this.toggleError()
-        }else if (this.state.correo == '' || this.state.validate.emailState == 'has-danger'){
+        }else if (this.state.correo === '' || this.state.validate.emailState === 'has-danger'){
             const { validate } = this.state;
             validate.emailState = 'has-danger';
             this.setState({ validate });
             this.toggleError()
-        }else if (this.state.contenido == '' || this.state.validate.contenidoState == 'has-danger'){
+        }else if (this.state.contenido === '' || this.state.validate.contenidoState === 'has-danger'){
             const { validate } = this.state;
             validate.nameState = 'has-danger';
             this.setState({ validate });
             this.toggleError()
-        }else if(this.state.tipoPublicacion == ''){
+        }else if(this.state.tipoPublicacion === ''){
             this.toggleError()
         }else{
-            
+            this.postPQR()
             this.toggleCorrect()
         }
         
@@ -158,7 +182,7 @@ class FormularioPQR extends React.Component{
                             <Label>
                                Telefono o Celular
                             </Label>
-                            <Input  name="telefono" type="number" value={this.state.telefono}onChange={(e) => {this.handleChange(e)}}/>
+                            <Input  name="telefono" type="number" value={(this.state.telefono === 0) ? "" : this.state.telefono}onChange={(e) => {this.handleChange(e)}}/>
                         </FormGroup>
                         <FormGroup>
                             <Label>
@@ -225,6 +249,7 @@ class FormularioPQR extends React.Component{
                                 Escriba sus sugerencias o comentarios *
                             </Label>
                             <Input type="textarea"  name="contenido" 
+                            value = {this.state.contenido}
                             valid={this.state.validate.contenidoState === "has-success"}
                             invalid={this.state.validate.contenidoState === "has-danger"}
                             onChange={(e) => {
@@ -240,7 +265,6 @@ class FormularioPQR extends React.Component{
                             
                         </FormGroup>
                         <Button color="warning" size = "lg" onClick={() => {
-                            console.log(this.state.nombre, this.state.telefono, this.state.correo, this.state.tipoPublicacion, this.state.contenido)
                             this.validateForm()
                             }}>
                             Enviar
