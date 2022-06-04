@@ -4,6 +4,7 @@ import { Navbar, NavbarBrand, Collapse,
 } from 'reactstrap';
 import { Link} from "react-router-dom";
 import React from "react";
+import "../views/estilos.css";
 
 
 class NavBarTop extends React.Component{
@@ -37,15 +38,11 @@ class NavBarTop extends React.Component{
                     <NavbarToggler onClick={this.toggle} />
                     <Collapse isOpen={this.state.isOpen} navbar>
                     <Nav fill navbar>
-
                         <NavItem className='separador'>
                             <h6><Link  class = " text-white text-decoration-none" to="/">Ver PQR</Link></h6>
                         </NavItem>
-                        
                         <NavItem className='separador'>
-                        
                             <h6><Link class = "text-white text-decoration-none" to="/formulario">Hacer una PQR</Link></h6>
-                        
                         </NavItem>
                     </Nav>
                     </Collapse>

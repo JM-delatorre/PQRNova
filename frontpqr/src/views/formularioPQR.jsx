@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Form, FormFeedback, FormGroup, Input, Label, Modal, ModalBody, ModalHeader} from "reactstrap";
 import NavBarTop from "../components/NavBarTop";
 import { APIPostPQR } from "../apiServices/apiPQRS";
+import "./estilos.css";
 class FormularioPQR extends React.Component{
     constructor(props) {
         super(props);
@@ -27,6 +28,7 @@ class FormularioPQR extends React.Component{
         
       }
 
+    //Uso del servicio de API
     postPQR = async() => {
         let datos = {
             nombre: this.state.nombre,
@@ -51,12 +53,24 @@ class FormularioPQR extends React.Component{
         })
 
     } 
+
+    //funciones onChange
+
     onValueChange(event) {
         this.setState({
             tipoPublicacion: event.target.value
         });
     }
 
+    handleChange = (event) => {
+        const { target } = event;
+        const value = target.value;
+        const { name } = target;
+    
+        this.setState({
+          [name]: value,
+        });
+    };
     toggleError() {
         
         this.setState({isModalErrOpen: !(this.state.isModalErrOpen)});
@@ -69,6 +83,8 @@ class FormularioPQR extends React.Component{
         
 
     }
+
+    // Funciones para validar
 
     validateForm= () => {
         
@@ -96,15 +112,7 @@ class FormularioPQR extends React.Component{
         
     }
     
-    handleChange = (event) => {
-        const { target } = event;
-        const value = target.value;
-        const { name } = target;
     
-        this.setState({
-          [name]: value,
-        });
-    };
 
     validateEmail(e) {
         const emailRex =
@@ -146,15 +154,11 @@ class FormularioPQR extends React.Component{
 
       }
 
+    
     render(){
-
         return(
-            <div className="contenedor">
-
-                
+            <div className="contenedor">          
                 <NavBarTop/>
-
-
                 <div className="insideBox" >
                     <div class ="shadow-lg p-3 rounded m-3 h-101">
                     <h1>PQR</h1>
@@ -182,7 +186,9 @@ class FormularioPQR extends React.Component{
                             <Label>
                                Telefono o Celular
                             </Label>
-                            <Input  name="telefono" type="number" value={(this.state.telefono === 0) ? "" : this.state.telefono}onChange={(e) => {this.handleChange(e)}}/>
+                            <Input  name="telefono" type="number" 
+                                    value={(this.state.telefono === 0) ? "" : this.state.telefono}
+                                    onChange={(e) => {this.handleChange(e)}}/>
                         </FormGroup>
                         <FormGroup>
                             <Label>
@@ -208,74 +214,52 @@ class FormularioPQR extends React.Component{
                             Escoje una opcion *
                             </Label>
                             <FormGroup check>
-                                
-                            <Input
-                                name="radio1"
-                                type="radio"
-                                value = "Queja"
-                                
-                                
-                                checked={this.state.tipoPublicacion === "Queja"}
-                                onChange={this.onValueChange}
-                            />
-                            {' '}
-                            <Label check>
-                                Queja
-                            </Label>
-
-                            
+                                <Input name="radio1" 
+                                    type="radio" value = "Queja" checked={this.state.tipoPublicacion === "Queja"}
+                                    onChange={this.onValueChange}/>
+                                {' '}
+                                <Label check>
+                                    Queja
+                                </Label>
                             </FormGroup>
                             <FormGroup check>
-                            <Input 
-                                name="radio1" 
-                                type="radio"
-                                value = "Sugerencia"
-                                
-                                
-                                checked={this.state.tipoPublicacion === "Sugerencia"}
-                                onChange={this.onValueChange}/>
-                            {' '}
-                            <Label check>
-                                Sugerencia
-                            </Label>
-                            
-                            </FormGroup>
-
-                            
-                            
+                                <Input  name="radio1"  type="radio" value = "Sugerencia"
+                                    checked={this.state.tipoPublicacion === "Sugerencia"}
+                                    onChange={this.onValueChange}/>
+                                {' '}
+                                <Label check>
+                                    Sugerencia
+                                </Label>
+                            </FormGroup>       
                         </FormGroup>
                         <FormGroup>
                             <Label>
                                 Escriba sus sugerencias o comentarios *
                             </Label>
                             <Input type="textarea"  name="contenido" 
-                            value = {this.state.contenido}
-                            valid={this.state.validate.contenidoState === "has-success"}
-                            invalid={this.state.validate.contenidoState === "has-danger"}
-                            onChange={(e) => {
-                                this.handleChange(e)
-                                this.validateSugerencia(e)
-                            }}/>
+                                value = {this.state.contenido}
+                                valid={this.state.validate.contenidoState === "has-success"}
+                                invalid={this.state.validate.contenidoState === "has-danger"}
+                                onChange={(e) => {
+                                    this.handleChange(e)
+                                    this.validateSugerencia(e)
+                                }}/>
                             <FormFeedback>
                                 Tu peticion es muy breve, por favor se mas especifico 
                             </FormFeedback>
                             <FormFeedback valid>
                                 Todo correcto con tu peticion
                             </FormFeedback>
-                            
                         </FormGroup>
-                        <Button color="warning" size = "lg" onClick={() => {
-                            this.validateForm()
-                            }}>
+                        <Button color="warning" size = "lg" onClick={() => {this.validateForm()}}>
                             Enviar
                         </Button>
                         <p><i>Los campos marcados con * son obligatorios</i></p>
                     </Form>
-                    
                     </div>
                 </div>
 
-
+                {/* Modales para darle feedback al Usuario*/}
                 <Modal  isOpen={this.state.isModalErrOpen} toggle={this.toggleError} >
                     <ModalHeader className = "miModalError">
                         Error
@@ -296,14 +280,8 @@ class FormularioPQR extends React.Component{
                     </ModalBody>
                 </Modal>
             </div>
-            
-
-
         )
     }
-
-
-
 }
 
 export default FormularioPQR;

@@ -7,7 +7,7 @@ import './App.css';
 function App() {
   return (
     <div>
-    
+    {/* Declaracion de las Rutas del proyecto */}
     <Routes>
       <Route path="/"  element={ <VerPQR /> }/>
       <Route  path="/formulario"  element = { <FormularioPQR /> }/>    
