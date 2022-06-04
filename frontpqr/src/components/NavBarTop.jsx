@@ -36,7 +36,7 @@ class NavBarTop extends React.Component{
                     </NavbarBrand>
                     <NavbarToggler onClick={this.toggle} />
                     <Collapse isOpen={this.state.isOpen} navbar>
-                    <Nav className="me-auto"navbar>
+                    <Nav fill navbar>
 
                         <NavItem className='separador'>
                             <h6><Link  class = " text-white text-decoration-none" to="/">Ver PQR</Link></h6>

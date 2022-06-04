@@ -11,9 +11,12 @@ class VerPQR extends React.Component{
     
         this.state = {
           pqrs: [],
-          intervalId: 0,
+          pqrsCompleto:[],
           modal: false,
           actualPQRS: [],
+          verTodos: true,
+          verQuejas: false,
+          verSugerencias: false
         };
     
         this.toggle = this.toggle.bind(this);
@@ -29,24 +32,38 @@ class VerPQR extends React.Component{
 
 
     }
+
     getAllPQRS = async() =>{
 
         let PQall = await APIGetPQRS()
         this.setState({pqrs: PQall})
+        this.setState({pqrsCompleto: PQall})
     }
 
+    filtrarQuejas = () => {
+        this.setState({verTodos: false})
+        this.setState({verSugerencias: false})
+        this.setState({verQuejas: true})
+        
+        let nuevoArray = this.state.pqrsCompleto.filter((peticion) => {
+            return peticion.tipoPublicacion === "Queja"
+        })
+        this.setState({pqrs: nuevoArray})
+    }
+    filtrarSugerencias = () => {
+        this.setState({verTodos: false})
+        this.setState({verSugerencias: true})
+        this.setState({verQuejas: false})
+        let nuevoArray = this.state.pqrsCompleto.filter((peticion) => {
+            return peticion.tipoPublicacion === "Sugerencia"
+        })
+        this.setState({pqrs: nuevoArray})
+    }
     componentDidMount(){
         this.getAllPQRS()
-        const idInt = setInterval(()=>{
-            this.getAllPQRS()
-        }, 5000)
-        
-        this.setState({intervalId: idInt})
     }
-    componentWillUnmount(){
 
-        clearInterval(this.state.intervalId)
-    }
+   
 
     timeConverter = (UNIX_timestamp) =>{
         var a = new Date(UNIX_timestamp);
@@ -72,7 +89,18 @@ class VerPQR extends React.Component{
 
                 <div className="insideBox" >
                     <div class ="shadow-lg p-3 rounded m-3 h-100">
-                    <h1>Acontinuacion tienes todos los usuarios</h1>
+                    <div class= "p-2 d-flex justify-content-center gap-5">
+                        <Button color="warning" outline size="lg"active = {this.state.verQuejas} onClick={this.filtrarQuejas}>Ver Quejas</Button>
+                        <Button color="warning" outline size="lg" active = {this.state.verSugerencias} onClick={this.filtrarSugerencias}>Ver Sugerencias</Button>
+                        <Button color="warning" outline size="lg" active = {this.state.verTodos} onClick= {()=> {
+                            this.getAllPQRS()
+                            this.setState({
+                                verTodos: true,
+                                verQuejas: false,
+                                verSugerencias: false
+                            })
+                        }}>Ver Todos</Button>
+                    </div>
                     <div className="scroller">
                             
                             {this.state.pqrs.map((it) => (

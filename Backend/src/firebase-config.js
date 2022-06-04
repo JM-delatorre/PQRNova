@@ -2,7 +2,7 @@
 
 var admin = require("firebase-admin");
 
-var serviceAccount = require("../firebaseKey.json");
+var serviceAccount = require("../firebaseKey.json")
 
 const {getFirestore}  = require('firebase-admin/firestore')
 

@@ -7,6 +7,11 @@
 }
 .separador{
     margin: 10px;
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+    padding-left: 10%;
+    padding-right: 10%;
+    width: 100%;
 }
 .scroller{
     height: 90%;
