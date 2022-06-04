@@ -66,9 +66,7 @@ class FormularioPQR extends React.Component{
         }else if(this.state.tipoPublicacion == ''){
             this.toggleError()
         }else{
-            this.setState({
-                tipoPublicacion: ''
-            });
+            
             this.toggleCorrect()
         }
         
